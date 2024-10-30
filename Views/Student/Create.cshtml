@@ -10,46 +10,131 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" id="studentForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input asp-for="Id" type="hidden" />
-            
+
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+                <input asp-for="FirstName" id="txtFirstName" class="form-control" />
+                <span id="errNameDiv" style="color:red" asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
+                <input asp-for="LastName" id="txtLastName" class="form-control" />
+                <span id="errLastNameDiv" style="color:red" asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <input asp-for="Email" id="txtEmail" class="form-control" />
+                <span id="errEmailDiv" style="color:red" asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Mobile" class="control-label"></label>
-                <input asp-for="Mobile" class="form-control" />
-                <span asp-validation-for="Mobile" class="text-danger"></span>
+                <input asp-for="Mobile" id="txtMobile" class="form-control" />
+                <span id="errMobileDiv" style="color:red" asp-validation-for="Mobile" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
+                <input asp-for="Address" id="txtAddress" class="form-control" />
+                <span id="errAddressDiv" style="color:red" asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <br>
+                <button type="button" class="btn btn-primary" onclick="saverecord()">Create</button>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <br>
+    <a class="btn btn-primary" asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+
+<script src="~/js/site.js"></script>
+<script type="text/javascript">
+    function saverecord() {
+        if (!validateInfo()) {
+            return false;
+        }
+        // If validation passes, submit the form
+        document.getElementById('studentForm').submit();
+    }
+
+    function validateInfo() {
+        var result = true;
+
+        // Validate FirstName
+        var nameValue = $('#txtFirstName').val().trim();
+        if (nameValue.length === 0) {
+            $("#errNameDiv").show().text("Your first name is required.");
+            result = false;
+        } else {
+            $("#errNameDiv").hide();
+        }
+
+        // Validate LastName
+        var lastNameValue = $('#txtLastName').val().trim();
+        if (lastNameValue.length === 0) {
+            $("#errLastNameDiv").show().text("Your last name is required.");
+            result = false;
+        } else {
+            $("#errLastNameDiv").hide();
+        }
+
+        // Validate Email
+        var emailValue = $('#txtEmail').val().trim();
+        if (emailValue.length === 0) {
+            $("#errEmailDiv").show().text("Your email is required.");
+            result = false;
+        } else {
+            $("#errEmailDiv").hide();
+        }
+
+        // Validate Mobile
+        var mobileValue = $('#txtMobile').val().trim();
+
+        // Check if the mobile number is empty
+        if (mobileValue.length === 0) {
+            $("#errMobileDiv").show().text("Your mobile number is required.");
+            result = false;
+        }
+        // Check if the mobile number is numeric
+        else if (!/^\d+$/.test(mobileValue)) {
+            $("#errMobileDiv").show().text("Your mobile number must be numeric.");
+            result = false;
+        }
+        // Check for length (11 digits)
+        else if (mobileValue.length !== 11) {
+            $("#errMobileDiv").show().text("Your mobile number must be exactly 11 digits long.");
+            result = false;
+        }
+        // Check for valid prefixes
+        else if (!/^(017|015|013|014|016|018|019)/.test(mobileValue)) {
+            $("#errMobileDiv").show().text("Your mobile number must start with 013, 014, 015, 016, 017, 018 or 019.");
+            result = false;
+        }
+        else {
+            $("#errMobileDiv").hide();
+        }
+
+
+        // Validate Address
+        var addressValue = $('#txtAddress').val().trim();
+        if (addressValue.length === 0) {
+            $("#errAddressDiv").show().text("Your address is required.");
+            result = false;
+        } else {
+            $("#errAddressDiv").hide();
+        }
+
+        return result; // Return overall validation result
+    }
+</script>

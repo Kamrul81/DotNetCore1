@@ -7,7 +7,10 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <form asp-action="Create" method="get">
+        <button class="btn btn-primary" type="submit">Create New</button>
+    </form>
+    @*<a asp-action="Create">Create New</a>*@
 </p>
 <table class="table">
     <thead>
@@ -55,9 +58,17 @@
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id}) |
-                @Html.ActionLink("Details", "Details", new {  id=item.Id  }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+
+                    <form style="display:inline;">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button class="btn btn-primary" type="submit" formaction="@Url.Action("Edit", new { id = item.Id })">Edit</button>
+                        <button class="btn btn-primary" type="submit" formaction="@Url.Action("Details", new { id = item.Id })">Details</button>
+                        <button class="btn btn-danger" type="submit" formaction="@Url.Action("Delete", new { id = item.Id })">Delete</button>
+                    </form>
+                    @* Equivalent of the form
+                       @Html.ActionLink("Edit", "Edit", new { id=item.Id}) |
+                       @Html.ActionLink("Details", "Details", new {  id=item.Id  }) |
+                       @Html.ActionLink("Delete", "Delete", new { id=item.Id }) *@
             </td>
         </tr>
 }

@@ -49,6 +49,10 @@
     </dl>
 </div>
 <div>
+    <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Edit", new { id = Model.Id })'">Edit</button>
+    @*
+        equivalent of upperline.
     @Html.ActionLink("Edit", "Edit", new { Model.Id  }) |
-    <a asp-action="Index">Back to List</a>
+    *@  
+    <a class="btn btn-primary" asp-action="Index">Back to List</a>
 </div>
