@@ -77,7 +77,7 @@ namespace DotNetCore1.Controllers
         public ActionResult Delete(int id)
         {
             Student student = studentDAL.GetStudentData(id);
-            return View();
+            return View(student);
         }
 
         // POST: StudentController/Delete/5
